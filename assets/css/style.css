@@ -182,7 +182,7 @@ form {
 .newCommentMessage {
     font-size: 15px;
     font-family: "Montserrat", sans-serif;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
 }
 
 .formCommentInput {
@@ -195,9 +195,23 @@ form {
 .emoji,
 .comment {
     padding: 15px 12px;
+    cursor: pointer;
+}
+
+.emoji {
+    font-size: 1.5rem;
+}
+
+.emoji:hover {
+    color: rgb(0, 0, 0);
 }
 
 .imgFormat {
+    max-block-size: 10rem;
+    margin: 12px auto;
+}
+
+#gifOnPost {
     max-block-size: 10rem;
     margin: 12px auto;
 }

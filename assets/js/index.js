@@ -1,29 +1,6 @@
-// ******************** Function for tracking the character count ********************
-const subjectCount = document.querySelector("#subjectCount");
-const inputCount = document.querySelector("#inputCount");
-let postSubject = document.getElementById("subject");
-let postInput = document.getElementById("journalInput");
-
-function countCharacters() {
-    let subjectMaxLength = 100;
-    let inputMaxLength = 1000;
-    let subjectLength = postSubject.value.length;
-    let inputLength = postInput.value.length;
-
-    if (subjectLength <= subjectMaxLength) {
-        subjectCount.textContent = `${subjectLength}/ ${subjectMaxLength}`;
-    }
-
-    if (inputLength <= inputMaxLength) {
-        inputCount.textContent = `${inputLength}/ ${inputMaxLength}`;
-    }
-}
-postSubject.addEventListener("keyup", countCharacters);
-postInput.addEventListener("keyup", countCharacters);
-
 // ******************** Submitting a new form ********************
-const form = document.querySelector("#new-post-form");
-form.addEventListener("submit", submitPost);
+// const form = document.querySelector("#new-post-form");
+// form.addEventListener("submit", submitPost);
 
 function submitPost(e) {
     e.preventDefault();
@@ -39,6 +16,7 @@ function submitPost(e) {
         gif: document.getElementById("gifPreview").getAttribute("src"),
         date: dateTimeStamp,
     };
+    document.getElementById('new-post-form').reset();
 
     const options = {
         method: "POST",
@@ -82,18 +60,18 @@ function appendPost(data) {
     // imgs for the gif
     console.log(data.gif);
     const newImg = document.createElement("img");
+    newImg.setAttribute("id", "gifOnPost");
     newImg.src = data.gif;
     newImg.style.display = "block";
     newImg.style.margin = "0 auto";
 
     // div for emoji icons and assigning icons a class of emoji
     const reactionDiv = document.createElement("div");
-    // const commentIcon = `<i class="fas fa-comment fa-2x comment"></i>`;
-    const loveIcon = `<i class="fas fa-heart fa-2x emoji"><small id="loveCounter">0</small></i>`;
-    const cryIcon = `<i class="fas fa-sad-tear fa-2x emoji"><small id="cryCounter">0</small></i>`;
-    const laughIcon = `<i class="fas fa-laugh-squint fa-2x emoji"><small id="laughCounter">0</small></i>`;
+    const loveIcon = `<i class="fas fa-heart fa-2x emoji"><small id="heartCounter${data.id}">${data.reactions.heart}</small></i>`;
+    const cryIcon = `<i class="fas fa-sad-tear fa-2x emoji"><small id="cryCounter${data.id}">${data.reactions.cry}</small></i>`;
+    const laughIcon = `<i class="fas fa-laugh-squint fa-2x emoji"><small id="laughCounter${data.id}">${data.reactions.laugh}</small></i>`;
     reactionDiv.setAttribute("class", `${data.id}`);
-    reactionDiv.innerHTML = loveIcon + cryIcon + laughIcon; //commentIcon +
+    reactionDiv.innerHTML = loveIcon + cryIcon + laughIcon;
 
     // create form for comments
     const commentDiv = document.createElement("div");
@@ -116,6 +94,13 @@ function appendPost(data) {
     // add event listener to comment submit button
     formComment.addEventListener("submit", submitComment); // function below
     commentDiv.appendChild(formComment);
+    // add existing comments to the post
+    for (let comment of data.comments) {
+        let commentP = document.createElement('p');
+        commentP.setAttribute('class', 'newCommentMessage');
+        commentP.textContent = comment;
+        commentDiv.appendChild(commentP);
+    }
 
     // appending each element to the new postsDiv, and then append this new div to existing postsContainer
     postsDiv.appendChild(header);
@@ -169,9 +154,7 @@ function commentsFunction(commentData, formComment) {
 // ******************** Function to handle emoji ********************
 function emojiReact(e) {
     console.log(e);
-
     let emoji = e.path[0].classList;
-    console.log(emoji);
     if (emoji[1] === "fa-heart") {
         emoji = "heart";
     } else if (emoji[1] === "fa-sad-tear") {
@@ -179,27 +162,27 @@ function emojiReact(e) {
     } else {
         emoji = "laugh";
     }
-
     const postId = e.path[1].className;
-
     const options = {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
         },
     };
-
     fetch(`https://bloguefp.herokuapp.com/${postId}/${emoji}`, options)
-        .then(console.log)
-        .then(emojiCounter)
+        .then((resp) => resp.json())
+        .then((data) => emojiCounter(data, postId, emoji))
         .catch(console.warn);
 }
 
-// function emojiCounter() {} // this function is not finished
+function emojiCounter(data, postId, emoji) {
+    document.getElementById(`${emoji}Counter${postId}`).textContent =
+        data.count;
+}
 
 // ******************** Add a GIF ********************
-const gifButton = document.getElementById("gif-button");
-gifButton.addEventListener("click", sendApiRequest);
+// const gifButton = document.getElementById("gif-button");
+// gifButton.addEventListener("click", sendApiRequest);
 
 function sendApiRequest(e) {
     // e.preventDefault(); Button has no default behaviour
@@ -241,7 +224,6 @@ getAllPosts();
 // ********************  Function exporting for testing ********************
 
 module.exports = {
-    countCharacters,
     submitPost,
     appendPost,
     appendPosts,

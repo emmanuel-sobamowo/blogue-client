@@ -5,6 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script defer src="assets/js/index.js"></script>
+        <script defer src="assets/js/events.js"></script>
+        <script defer src="assets/js/count.js"></script>
         <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
         <script
             src="https://kit.fontawesome.com/2021b518c4.js"
@@ -27,8 +29,12 @@
             sizes="16x16"
             href="assets/images/favicon/favicon-16x16.png"
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="assets/css/media-queries.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="assets/css/media-queries.css"
+        />
         <!-- <link rel="manifest" href="/site.webmanifest" /> -->
         <title>Blogue</title>
     </head>
@@ -85,12 +91,16 @@
                         placeholder="Type in a keyword and click Add GIF to preview (optional)"
                     />
 
-                    <button onclick="sendApiRequest()" id="gif-button">
+                    <button
+                        onclick="sendApiRequest()"
+                        id="gif-button"
+                        type="button"
+                    >
                         <!-- check if putting a function on onclick works? -->
                         Add GIF
                     </button>
                     <div id="gifContainer">
-                        <img id="gifPreview" src="">
+                        <img id="gifPreview" src="" />
                     </div>
                 </div>
                 <br /><br />
