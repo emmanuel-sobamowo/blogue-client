@@ -5,6 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script defer src="assets/js/index.js"></script>
+        <script defer src="assets/js/events.js"></script>
+        <script defer src="assets/js/count.js"></script>
         <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
         <script
             src="https://kit.fontawesome.com/2021b518c4.js"
@@ -27,8 +29,11 @@
             sizes="16x16"
             href="assets/images/favicon/favicon-16x16.png"
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="assets/css/media-queries.css"/>
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="assets/css/media-queries.css"
+        />
         <!-- <link rel="manifest" href="/site.webmanifest" /> -->
         <title>Blogue</title>
     </head>
@@ -54,7 +59,8 @@
         <div id="post">
             <h3>WHAT'S ON YOUR MIND?</h3>
             <form id="new-post-form">
-                <label for="subject"> Your Entry</label><br /><br />
+                <label for="subject">SHARE YOUR <span id="spin"></span></span></label
+                ><br /><br />
                 Subject:
                 <input
                     type="text"
@@ -85,12 +91,15 @@
                         placeholder="Type in a keyword and click Add GIF to preview (optional)"
                     />
 
-                    <button onclick="sendApiRequest()" id="gif-button">
-                        <!-- check if putting a function on onclick works? -->
-                        Add GIF
-                    </button>
+                    <button
+                        onclick="sendApiRequest()"
+                        id="gif-button"
+                        type="button"
+                    >
+                        Add GIF</button
+                    ><br />
                     <div id="gifContainer">
-                        <img id="gifPreview" src="">
+                        <img id="gifPreview" src="" />
                     </div>
                 </div>
                 <br /><br />
@@ -101,5 +110,11 @@
             <h3>WHAT'S EVERYONE THINKING?</h3>
             <div id="postsContainer"></div>
         </div>
+        <button
+        class="backToTop"
+        onClick="document.querySelector('h1').scrollIntoView();"
+    >
+        Back to top
+    </button>
     </body>
 </html>
